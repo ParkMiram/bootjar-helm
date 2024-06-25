@@ -72,13 +72,30 @@ resources: {}
   #   memory: 128Mi
 
 livenessProbe:
+  initialDelaySeconds: 60
+  failureThreshold: 3
+  successThreshold: 1
   httpGet:
-    path: /
+    path: /actuator/health
     port: http
+
 readinessProbe:
+  initialDelaySeconds: 60
+  failureThreshold: 3
+  successThreshold: 1
   httpGet:
-    path: /
+    path: /actuator/health
     port: http
+
+env:
+  - name: "profiles"
+    value: "prod"
+  - name: "SPRING_DATASOURCE_URL"
+    value: "r2dbc:mysql://bootjar-comment-mysql-comment:3306/bootjar_comment"
+  - name: "SPRING_DATASOURCE_USERNAME"
+    value: "root"
+  - name: "SPRING_DATASOURCE_PASSWORD"
+    value: "1234"
 
 autoscaling:
   enabled: false
